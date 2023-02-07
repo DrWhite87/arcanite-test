@@ -65,6 +65,27 @@ $ php artisan db:seed
 $ SANCTUM_STATEFUL_DOMAINS=ваш домен
 ```
 
+## API token
+
+API токен можно получить в своем профиле https://arcanite.stopugroza.ru/profile.
+
+Добавьте токен в заголовки запроса:
+```
+Authorization: Bearer <token>
+```
+
+Токен можно использовать только для создания выплаты:
+```
+POST /api/payments
+{
+  "user_id": 1,
+  "requisites": "Requisites",
+  "amount": "1000.00",
+  "currency": "RUB"
+}
+```
+
+
 ## Тестовый адрес
 
 https://arcanite.stopugroza.ru/
