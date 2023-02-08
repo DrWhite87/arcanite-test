@@ -13,6 +13,10 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
+            path: '/',
+            redirect: { name: 'payments.index' },
+        },
+        {
             name: "login",
             path: "/login",
             component: Login,
@@ -77,7 +81,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
 
-    document.title = to.meta.title
+    document.title = to.meta.title;
+
+    console.log('to', to);
+
     if (to.meta.middleware === "guest") {
         if (authStore.authenticated) {
             next({name: "payments.index"})

@@ -26,11 +26,7 @@ class PaymentController extends BaseController
     {
         $payments = $payments
             ->with(['user'])
-            ->when(!empty($request->query('search')), function ($q) use ($request) {
-                $q->whereHas('user', function ($q) use ($request) {
-                    $q->where('name', 'like', $request->query('search') . '%');
-                });
-            })
+            ->when(!empty($request->query('search')), fn($q) => $q->whereHas('user', fn($q) => $q->where('name', 'like', $request->query('search') . '%')))
             ->when(!empty($request->query('sort')), function ($q) use ($request) {
                 $sortAttribute = $request->query('sort');
                 $sortDirection = 'ASC';
@@ -40,9 +36,8 @@ class PaymentController extends BaseController
                 }
 
                 $q->orderBy($sortAttribute, $sortDirection);
-            }, function ($q){
-                $q->orderBy('id', 'DESC');
-            })->paginate();
+            }, fn($q) => $q->orderBy('id', 'DESC'))
+            ->paginate();
 
 
         return $this->sendResponse([
